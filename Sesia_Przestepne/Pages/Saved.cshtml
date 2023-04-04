@@ -1,0 +1,18 @@
+﻿@page
+@model Sesia_Przestepne.Pages.SavedModel
+@{
+}
+@if (Model.People != null)
+{
+    <p>
+        @foreach(var p in Model.People)
+            {<li>
+                @p.Name
+                ,
+                @p.Year
+                 - 
+                @p.Leap ? "rok przestępny" : "rok nie przestępny"
+            </li>}
+    </p>
+}
+

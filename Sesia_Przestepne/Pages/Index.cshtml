@@ -1,0 +1,32 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="">
+    <form method="post">
+        <div class="form-group mb-3">
+            <label asp-for="NewPerson.Name"></label>
+            <input type="number" asp-for="NewPerson.Name" /><br />
+            <span style="display: block; font-weight: bold" asp-validation-for="NewPerson.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="NewPerson.Year"></label>
+            <input type="number" asp-for="NewPerson.Year" /><br />
+            <span style="display: block; font-weight: bold" asp-validation-for="NewPerson.Year" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">Zatwierdź</button>
+        <div class="alert alert-success" style="@(Model.NewPerson ? "display:block" : "display:none")" role="alert">
+            <span>
+                @Model.NewPerson.Name
+                @Model.NewPerson.Name[-1] == "a" ? "urodziła" : "urodził"
+                się w 
+                @Model.NewPerson.Year
+                . To
+                @Model.NewPerson.Leap ? "" : "nie"
+                był rok przestępny.
+            </span>
+        </div>
+    </form>
+</div>
