@@ -11,7 +11,12 @@
                 ,
                 @p.Year
                  - 
-                @p.Leap ? "rok przestępny" : "rok nie przestępny"
+                 rok
+                @if (!p.Leap??true)
+                {
+                    <span>nie</span>
+                }
+                przestępny
             </li>}
     </p>
 }

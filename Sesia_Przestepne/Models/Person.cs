@@ -5,6 +5,8 @@ namespace Sesia_Przestepne.Models
 {
     public class Person
     {
+        public Person() { }
+        
         public Person(string name, int year)
         {
             Name = name;

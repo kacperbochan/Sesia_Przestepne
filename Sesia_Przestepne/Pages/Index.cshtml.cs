@@ -18,23 +18,25 @@ namespace Sesia_Przestepne.Pages
         }
 
         public void OnGet() {
+            
         }
 
         public IActionResult OnPost()
         {
-
+            
             if (ModelState.IsValid)// ciekawostka musiałem dodać ? po typie string dla zmiennej Name, jest to dla tego, że jeśli nie podało się nazwy urztkownika 
             {
                 var Data = HttpContext.Session.GetString("People");
                 List<Person> People = new List<Person>();
                 if (Data != null)
                     People = JsonConvert.DeserializeObject<List<Person>>(Data);
+                
+                NewPerson.IsLeap();
 
                 People.Add(NewPerson);
 
                 HttpContext.Session.SetString("People",
                 JsonConvert.SerializeObject(People));
-                return RedirectToPage("./SavedInSession");
             }
             return Page();
 
