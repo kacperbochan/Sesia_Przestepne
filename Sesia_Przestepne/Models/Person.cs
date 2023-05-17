@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Linq;
 
 namespace Sesia_Przestepne.Models
@@ -6,6 +7,12 @@ namespace Sesia_Przestepne.Models
     public class Person
     {
         public Person() { }
+
+        public Person(int year) 
+        {
+            Year = year;
+            Leap = (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0));
+        }
         
         public Person(string name, int year)
         {
@@ -14,9 +21,13 @@ namespace Sesia_Przestepne.Models
             Leap = (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0));
         }
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
         [
             Display(Name = "Imie"),
-            Required, 
+            //Required, 
             MaxLength(100, ErrorMessage = "{0} nie powinno przekraczać {1} liter."), 
             MinLength(1, ErrorMessage ="{0} powinno mieć długość conajmniej 1 znaku")]
         public string? Name { get; set; }
@@ -33,5 +44,8 @@ namespace Sesia_Przestepne.Models
             Leap = (((Year % 4 == 0) && (Year % 100 != 0)) || (Year % 400 == 0));
             return Leap;
         }
+
+        [Display(Name = "Kiedy Sprawdzano")]
+        public DateTime? SearchTime { get; set; }
     }
 }

@@ -1,0 +1,23 @@
+﻿@page
+@model Sesia_Przestepne.Pages.SearchLogModel
+@{
+}
+@if (Model.People != null)
+{
+    <p>
+        @foreach(var p in Model.People)
+            {<li>
+                @p.Name
+                ,
+                @p.Year
+                 - 
+                 rok
+                @if (!p.Leap??true)
+                {
+                    <span>nie</span>
+                }
+                przestępny
+            </li>}
+    </p>
+}
+
