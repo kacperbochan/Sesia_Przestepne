@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Linq;
 
@@ -47,5 +48,9 @@ namespace Sesia_Przestepne.Models
 
         [Display(Name = "Kiedy Sprawdzano")]
         public DateTime? SearchTime { get; set; }
+
+        public string? UserId { get; set; }
+
+        public IdentityUser? User { get; set; }
     }
 }

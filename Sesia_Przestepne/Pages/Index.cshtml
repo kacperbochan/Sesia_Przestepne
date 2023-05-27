@@ -21,17 +21,24 @@
         {
             <div class="alert alert-success" style="display:block" role="alert">
                 <span>
-                    @Model.NewPerson.Name
-                    @if (@Model.NewPerson.Name.Length > 0 && @Model.NewPerson.Name[Model.NewPerson.Name.Length-1] == 'a')
-                    {
-                        <span>urodziła</span>
+                    @if(Model.NewPerson.Name != null){
+                        @Model.NewPerson.Name
+                        @if (@Model.NewPerson.Name.Length > 0 && @Model.NewPerson.Name[Model.NewPerson.Name.Length-1] == 'a')
+                        {
+                            <span>urodziła</span>
+                        }
+                        else{
+                            <span>urodził</span>
+                        }
+                        <span>się w</span>
+                        @Model.NewPerson.Year
+                        <span>roku.</span>
                     }
-                    else{
-                        <span>urodził</span>
+                   else{
+                        <span>Rok </span>
+                        @Model.NewPerson.Year
                     }
-                    się w
-                    @Model.NewPerson.Year
-                    roku. To
+                     To
                     @if (!@Model.NewPerson.Leap??true)
                     {
                         <span>nie</span>

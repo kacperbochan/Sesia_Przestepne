@@ -1,20 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Sesia_Przestepne.Models;
+using System;
 
 namespace Sesia_Przestepne.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private readonly ApplicationDbContext _context;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+
 
         [BindProperty]
         public Person NewPerson { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger, ApplicationDbContext context, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
+            _context = context;
             _logger = logger;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         public void OnGet() {
@@ -34,6 +44,17 @@ namespace Sesia_Przestepne.Pages
                 NewPerson.IsLeap();
 
                 People.Add(NewPerson);
+
+                if (_signInManager.IsSignedIn(User))
+                {
+                    NewPerson.UserId = _userManager.GetUserId(User);
+                    NewPerson.User = (IdentityUser?)_userManager.Users.Where(x=>x.Id == NewPerson.UserId).First();
+                }
+
+                NewPerson.SearchTime = DateTime.Now;
+
+                _context.People.Add(NewPerson);
+                _context.SaveChanges();
 
                 HttpContext.Session.SetString("People",
                 JsonConvert.SerializeObject(People));

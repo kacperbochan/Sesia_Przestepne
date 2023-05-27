@@ -1,23 +1,86 @@
 ﻿@page
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
 @model Sesia_Przestepne.Pages.SearchLogModel
-@{
-}
 @if (Model.People != null)
 {
-    <p>
-        @foreach(var p in Model.People)
-            {<li>
-                @p.Name
-                ,
-                @p.Year
-                 - 
-                 rok
-                @if (!p.Leap??true)
-                {
-                    <span>nie</span>
-                }
-                przestępny
-            </li>}
-    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Imie
+                </th>
+                <th>
+                    Sprawdzany rok
+                </th>
+                <th>
+                    Przestępny
+                </th>
+                <th>
+                    Data Wyszukiwania
+                </th>
+                <th>
+                    Użytkownik ID
+                </th>
+                <th>
+                    Użytkownik Nazwa
+                </th>
+                <th>
+                    Usuń
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.People)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Year
+                    </td>
+                    <td>
+                        @item.Leap
+                    </td>
+                    <td>
+                        @item.SearchTime
+                    </td>
+                    <td>
+                        @item.UserId
+                    </td>
+                    <td>
+                        @Model.GetUserName(item.UserId)
+                    </td>
+                    <td>
+                       @if (UserManager.GetUserId(User) == item.UserId) {
+                            <form method="post" asp-page-handler="RemoveLog" asp-route-id="@item.Id" asp-route-currentPage="@Model.CurrentPage">
+                                <button type="submit">usuń</button>
+                            </form>
+                        }
+                        else{
+                            <input type="button" value="usuń" disabled="disabled">
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div style="font-size: 20px; font-weight: bold; text-align: center;">
+        @if(Model.TotalRecords>20)
+        @for (var i = 1; i <= Math.Ceiling((double)Model.TotalRecords / Model.PageSize); i++)
+        {
+            if (i == Model.CurrentPage)
+            {
+                <text>@i</text>
+            }
+            else
+            {
+                <a asp-page="./SearchLog" asp-route-currentPage="@i">@i</a>
+            }
+        }
+    </div>
 }
 
