@@ -1,5 +1,6 @@
 # Sesia_Przestepne
 **Przeniesiono funkcjonalności związane z dostępem do DB do osobnego serwisu**
+
 Dodano serwis SearchLogService którego używa się teraz zamiast context na stronach
 
 
