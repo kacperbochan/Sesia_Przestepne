@@ -8,6 +8,6 @@ namespace Sesia_Przestepne
     {
         public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<Person> People { get; set; }
+        public DbSet<Search> People { get; set; }
     }
 }

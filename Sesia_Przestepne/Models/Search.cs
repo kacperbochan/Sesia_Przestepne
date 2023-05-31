@@ -5,17 +5,17 @@ using System.Xml.Linq;
 
 namespace Sesia_Przestepne.Models
 {
-    public class Person
+    public class Search
     {
-        public Person() { }
+        public Search() { }
 
-        public Person(int year) 
+        public Search(int year) 
         {
             Year = year;
             Leap = (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0));
         }
         
-        public Person(string name, int year)
+        public Search(string name, int year)
         {
             Name = name;
             Year = year;

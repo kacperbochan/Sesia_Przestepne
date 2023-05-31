@@ -8,12 +8,12 @@ namespace Sesia_Przestepne.Pages
 {
     public class SavedModel : PageModel
     {
-        public List<Person> People = new List<Person>();
+        public List<Search> People = new List<Search>();
         public void OnGet()
         {
             var Data = HttpContext.Session.GetString("People");
             if (Data != null)
-                People = JsonConvert.DeserializeObject<List<Person>>(Data);
+                People = JsonConvert.DeserializeObject<List<Search>>(Data);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Sesia_Przestepne.Pages
 
 
         [BindProperty]
-        public Person NewPerson { get; set; }
+        public Search NewPerson { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, ApplicationDbContext context, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
@@ -37,9 +37,9 @@ namespace Sesia_Przestepne.Pages
             if (ModelState.IsValid)// ciekawostka musiałem dodać ? po typie string dla zmiennej Name, jest to dla tego, że jeśli nie podało się nazwy urztkownika 
             {
                 var Data = HttpContext.Session.GetString("People");
-                List<Person> People = new List<Person>();
+                List<Search> People = new List<Search>();
                 if (Data != null)
-                    People = JsonConvert.DeserializeObject<List<Person>>(Data);
+                    People = JsonConvert.DeserializeObject<List<Search>>(Data);
                 
                 NewPerson.IsLeap();
 

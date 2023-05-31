@@ -17,7 +17,7 @@ namespace Sesia_Przestepne.Pages
 
         public int CurrentPage { get; set; } = 1;
         public int PageSize { get; set; } = 20;
-        public int TotalRecords { get; set; }
+        public int TotalRecords { get; set; } = 0;
 
         public SearchLogModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
@@ -25,7 +25,7 @@ namespace Sesia_Przestepne.Pages
             _userManager = userManager;
         }
 
-        public List<Person> People { get; set; } = default!;
+        public List<Search> People { get; set; } = default!;
 
         public async Task<IActionResult> OnPostRemoveLogAsync(int id, int currentPage = 1)
         {
@@ -36,7 +36,7 @@ namespace Sesia_Przestepne.Pages
                 if (_context.People.Any(x=>x.Id == id)){
 
                     //pobieramy wyszukanie
-                    Person person = await _context.People.Where(x => x.Id == id).FirstAsync();
+                    Search person = await _context.People.Where(x => x.Id == id).FirstAsync();
 
                     //drugie sprawdzenie po stronie serwera
                     //jeśli id usuwanego elementu należy do użytkownika wykonującego usuwanie
