@@ -1,11 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Sesia_Przestepne;
 using Microsoft.AspNetCore.Identity;
+using Sesia_Przestepne.Services.Interfaces;
+using Sesia_Przestepne.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddTransient<ISearchLogService,SearchLogService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 

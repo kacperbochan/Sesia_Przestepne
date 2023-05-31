@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Sesia_Przestepne.Models;
+using Sesia_Przestepne.Services.Interfaces;
 using System;
 
 namespace Sesia_Przestepne.Pages
@@ -11,17 +12,18 @@ namespace Sesia_Przestepne.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly ApplicationDbContext _context;
+        
+        private readonly ISearchLogService _searchLogService;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
 
 
         [BindProperty]
-        public Search NewPerson { get; set; }
+        public Search NewSearch { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger, ApplicationDbContext context, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public IndexModel(ISearchLogService searchLogService ,ILogger<IndexModel> logger, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
-            _context = context;
+            _searchLogService = searchLogService;
             _logger = logger;
             _signInManager = signInManager;
             _userManager = userManager;
@@ -41,20 +43,19 @@ namespace Sesia_Przestepne.Pages
                 if (Data != null)
                     People = JsonConvert.DeserializeObject<List<Search>>(Data);
                 
-                NewPerson.IsLeap();
+                NewSearch.IsLeap();
 
-                People.Add(NewPerson);
+                People.Add(NewSearch);
 
                 if (_signInManager.IsSignedIn(User))
                 {
-                    NewPerson.UserId = _userManager.GetUserId(User);
-                    NewPerson.User = (IdentityUser?)_userManager.Users.Where(x=>x.Id == NewPerson.UserId).First();
+                    NewSearch.UserId = _userManager.GetUserId(User);
+                    NewSearch.User = (IdentityUser?)_userManager.Users.Where(x=>x.Id == NewSearch.UserId).First();
                 }
 
-                NewPerson.SearchTime = DateTime.Now;
+                NewSearch.SearchTime = DateTime.Now;
 
-                _context.People.Add(NewPerson);
-                _context.SaveChanges();
+                _searchLogService.AddSearch(NewSearch);
 
                 HttpContext.Session.SetString("People",
                 JsonConvert.SerializeObject(People));

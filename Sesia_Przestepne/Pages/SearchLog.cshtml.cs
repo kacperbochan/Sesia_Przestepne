@@ -6,22 +6,25 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Sesia_Przestepne.Services.Interfaces;
 
 namespace Sesia_Przestepne.Pages
 {
     [Authorize]
     public class SearchLogModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+
+        private readonly ISearchLogService _searchLogService;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public int CurrentPage { get; set; } = 1;
-        public int PageSize { get; set; } = 20;
-        public int TotalRecords { get; set; } = 0;
 
-        public SearchLogModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public int CurrentPage { get; set; } = 1;
+        public int PageAmount { get; set; } = 1;
+        public int PageSize { get; set; } = 20;
+
+        public SearchLogModel(ISearchLogService searchLogService, UserManager<IdentityUser> userManager)
         {
-            _context = context;
+            _searchLogService = searchLogService;
             _userManager = userManager;
         }
 
@@ -30,54 +33,29 @@ namespace Sesia_Przestepne.Pages
         public async Task<IActionResult> OnPostRemoveLogAsync(int id, int currentPage = 1)
         {
             //sprawdzamy, czy baza danych zawiera jakiekolwiek wartości
-            if (_context.People != null)
+            if (await _searchLogService.IsPeopleNotNull())
             {
-                //jeśli istnieje zapis o takim id
-                if (_context.People.Any(x=>x.Id == id)){
+                //usuwamy wyszukanie o podanym id
+                await _searchLogService.RemoveSearch(id, _userManager.GetUserId(User));
 
-                    //pobieramy wyszukanie
-                    Search person = await _context.People.Where(x => x.Id == id).FirstAsync();
+                PageAmount = await _searchLogService.GetPageAmount();
 
-                    //drugie sprawdzenie po stronie serwera
-                    //jeśli id usuwanego elementu należy do użytkownika wykonującego usuwanie
-                    if (_userManager.GetUserId(User) == person.UserId)
-                    {
-                        //usuwamy z bazy danych
-                        _context.People.Remove(person);
-                        _context.SaveChanges();
-                    }
-                }
+                currentPage = (currentPage > PageAmount) ? PageAmount : currentPage;
 
-                //sprawdzamy ile jest danych w DB
-                TotalRecords = await _context.People.CountAsync();
-
-                //jeśli wybrany numer strony przekracza ich ilość, pobieramy ostatnią
-                currentPage = (currentPage > TotalRecords / PageSize) ? TotalRecords / PageSize : currentPage;
-
-                //zapisujemy obecną stronę
-                CurrentPage = currentPage;
-
-                //pobieramy zapisy z obecnej strony
-                People = await _context.People
-                    .Skip((CurrentPage - 1) * PageSize)
-                    .Take(PageSize)
-                    .ToListAsync();
+                await _searchLogService.GetCurrentPage(currentPage);
             }
             return Page();
         }
 
         public async Task OnGetAsync(int currentPage = 1)
         {
-            if (_context.People != null)
+            if (await _searchLogService.IsPeopleNotNull())
             {
+                PageAmount = await _searchLogService.GetPageAmount();
 
-                CurrentPage = currentPage;
-                TotalRecords = await _context.People.CountAsync();
+                currentPage = (currentPage > PageAmount) ? PageAmount : currentPage;
 
-                People = await _context.People
-                    .Skip((CurrentPage - 1) * PageSize)
-                    .Take(PageSize)
-                    .ToListAsync();
+                People = await _searchLogService.GetCurrentPage(currentPage);
             }
         }
 

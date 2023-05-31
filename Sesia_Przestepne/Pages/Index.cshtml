@@ -7,23 +7,23 @@
 <div class="">
     <form method="post">
         <div class="form-group mb-3">
-            <label asp-for="NewPerson.Name"></label>
-            <input type="text" asp-for="NewPerson.Name" /><br />
-            <span style="display: block; font-weight: bold" asp-validation-for="NewPerson.Name" class="text-danger"></span>
+            <label asp-for="NewSearch.Name"></label>
+            <input type="text" asp-for="NewSearch.Name" /><br />
+            <span style="display: block; font-weight: bold" asp-validation-for="NewSearch.Name" class="text-danger"></span>
         </div>
         <div class="form-group mb-3">
-            <label asp-for="NewPerson.Year"></label>
-            <input type="number" asp-for="NewPerson.Year" /><br />
-            <span style="display: block; font-weight: bold" asp-validation-for="NewPerson.Year" class="text-danger"></span>
+            <label asp-for="NewSearch.Year"></label>
+            <input type="number" asp-for="NewSearch.Year" /><br />
+            <span style="display: block; font-weight: bold" asp-validation-for="NewSearch.Year" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary mb-3">Zatwierdź</button>
-        @if (Model.NewPerson != null && ModelState.IsValid)
+        @if (Model.NewSearch != null && ModelState.IsValid)
         {
             <div class="alert alert-success" style="display:block" role="alert">
                 <span>
-                    @if(Model.NewPerson.Name != null){
-                        @Model.NewPerson.Name
-                        @if (@Model.NewPerson.Name.Length > 0 && @Model.NewPerson.Name[Model.NewPerson.Name.Length-1] == 'a')
+                    @if(Model.NewSearch.Name != null){
+                        @Model.NewSearch.Name
+                        @if (@Model.NewSearch.Name.Length > 0 && @Model.NewSearch.Name[Model.NewSearch.Name.Length-1] == 'a')
                         {
                             <span>urodziła</span>
                         }
@@ -31,15 +31,15 @@
                             <span>urodził</span>
                         }
                         <span>się w</span>
-                        @Model.NewPerson.Year
+                        @Model.NewSearch.Year
                         <span>roku.</span>
                     }
                    else{
                         <span>Rok </span>
-                        @Model.NewPerson.Year
+                        @Model.NewSearch.Year
                     }
                      To
-                    @if (!@Model.NewPerson.Leap??true)
+                    @if (!@Model.NewSearch.Leap??true)
                     {
                         <span>nie</span>
                     }

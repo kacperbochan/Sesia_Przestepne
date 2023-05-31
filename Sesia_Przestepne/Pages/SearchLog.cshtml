@@ -69,8 +69,8 @@
     </table>
 
     <div style="font-size: 20px; font-weight: bold; text-align: center;">
-        @if(Model.TotalRecords>20)
-        @for (var i = 1; i <= Math.Ceiling((double)Model.TotalRecords / Model.PageSize); i++)
+        @if(Model.PageAmount>1)
+        @for (var i = 1; i <= Math.Ceiling((double)Model.PageAmount); i++)
         {
             if (i == Model.CurrentPage)
             {

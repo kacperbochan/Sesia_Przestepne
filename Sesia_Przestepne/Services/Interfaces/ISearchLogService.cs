@@ -1,8 +1,11 @@
 ﻿using Sesia_Przestepne.Models;
 
-namespace Sesia_Przestepne.Interfaces
+namespace Sesia_Przestepne.Services.Interfaces
 {
-    public interface ILeapYearInterface
+    /// <summary>
+    /// Oryginalnie miał się nazywać ILeapYearInterface, ale zmieniłem nazwę by bardziej pasowała
+    /// </summary>
+    public interface ISearchLogService
     {
         /// <summary>
         /// Sprawdza, czy People w bazie danych mają jakiekolwiek rekordy
@@ -17,7 +20,7 @@ namespace Sesia_Przestepne.Interfaces
         /// <param name="userId"></param>
         /// <returns></returns>
         public Task<bool> RemoveSearch(int id, string userId);
-                
+
         /// <summary>
         /// Zwraca ilość stron
         /// </summary>
@@ -37,6 +40,6 @@ namespace Sesia_Przestepne.Interfaces
         /// <param name="search"></param>
         /// <returns></returns>
         public Task<bool> AddSearch(Search search);
-        
+
     }
 }
